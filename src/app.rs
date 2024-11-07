@@ -11,12 +11,12 @@ pub struct Args {
 pub enum SubCmd {
     // add a file
     Add {
-        #[arg(long)]
+        #[arg(long, help = "Path to file to add.")]
         path: String,
     },
     // get a file
     Get {
-        #[arg(long)]
+        #[arg(long, help = "ID of file to get.")]
         id: String,
     },
     // list all files
@@ -25,7 +25,7 @@ pub enum SubCmd {
         verbose: bool,
     },
     Remove {
-        #[arg(long)]
+        #[arg(long, help = "ID of file to remove.")]
         id: String,
     },
 }
