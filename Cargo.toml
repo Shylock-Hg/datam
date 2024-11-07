@@ -1,0 +1,17 @@
+[package]
+name = "datam"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.20", features = ["derive"] }
+serde_json = "1.0.132"
+ipfs-api-backend-hyper = "0.6"
+serde = "1.0.214"
+sha2 = "0.10.8"
+crypto-common = "0.1.6"
+tokio = { version = "1.41.0", features = ["rt-multi-thread"] }
+futures = "0.3.31"
+log = "0.4.22"
+simple-home-dir = "0.4.4"
+simple_logger = "5.0.0"

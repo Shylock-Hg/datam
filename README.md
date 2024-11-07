@@ -1,0 +1,1 @@
+A data manager used by myself.
