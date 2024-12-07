@@ -1,8 +1,11 @@
+use async_trait::async_trait;
+
+#[async_trait]
 pub trait Handler {
-    fn add(&mut self, ctx: Context) -> Context;
-    fn get(&self, ctx: Context) -> Option<Context>;
-    fn remove(&mut self, ctx: Context) -> Option<Context>;
-    fn list(&self) -> String;
+    async fn add(&mut self, ctx: Context) -> Context;
+    async fn get(&self, ctx: Context) -> Option<Context>;
+    async fn remove(&mut self, ctx: Context) -> Option<Context>;
+    async fn list(&self) -> String;
 }
 
 #[derive(Clone)]

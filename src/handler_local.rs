@@ -1,5 +1,6 @@
 use crate::handler::{Context, Handler};
 use crate::model::{Database, File};
+use async_trait::async_trait;
 use serde_json;
 use sha2::{Digest, Sha256};
 use simple_home_dir;
@@ -41,8 +42,9 @@ impl LocalHandler {
     }
 }
 
+#[async_trait]
 impl Handler for LocalHandler {
-    fn add(&mut self, ctx: Context) -> Context {
+    async fn add(&mut self, ctx: Context) -> Context {
         let mut hasher = Sha256::new();
         hasher.update(ctx.get_content());
         let sha256 = hasher.finalize();
@@ -56,7 +58,7 @@ impl Handler for LocalHandler {
         ctx
     }
 
-    fn get(&self, ctx: Context) -> Option<Context> {
+    async fn get(&self, ctx: Context) -> Option<Context> {
         let res = self.db.get(ctx.get_id());
         res.map(|f| {
             Context::new(
@@ -67,7 +69,7 @@ impl Handler for LocalHandler {
         })
     }
 
-    fn remove(&mut self, ctx: Context) -> Option<Context> {
+    async fn remove(&mut self, ctx: Context) -> Option<Context> {
         let res = self.db.remove(ctx.get_id());
         res.map(|f| {
             Context::new(
@@ -78,7 +80,7 @@ impl Handler for LocalHandler {
         })
     }
 
-    fn list(&self) -> String {
+    async fn list(&self) -> String {
         self.db.to_string()
     }
 }
