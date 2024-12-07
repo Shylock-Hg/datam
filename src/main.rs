@@ -10,9 +10,8 @@ mod handler_ipfs;
 mod handler_local;
 mod model;
 
-use handler::Handler;
-
-fn main() {
+#[tokio::main]
+async fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
     let arg = app::Args::parse();
@@ -23,12 +22,12 @@ fn main() {
             let content = std::fs::read(&path).unwrap();
             let mut handler = handler_composed::ComposedHandler::new();
             let ctx = handler::Context::new(filename.to_owned(), content, "".to_string());
-            handler.add(ctx);
+            handler.add(ctx).await;
         }
         app::SubCmd::Get { id } => {
             let handler = handler_composed::ComposedHandler::new();
             let ctx = handler::Context::new(id.clone(), vec![], "".to_string());
-            let res = handler.get(ctx);
+            let res = handler.get(ctx).await;
             if let Some(res) = res {
                 std::fs::File::create(&id).unwrap();
                 std::fs::write(id, res.get_content()).unwrap();
@@ -39,12 +38,12 @@ fn main() {
         }
         app::SubCmd::List { .. } => {
             let handler = handler_composed::ComposedHandler::new();
-            println!("{}", handler.list());
+            println!("{}", handler.list().await);
         }
         app::SubCmd::Remove { id } => {
             let mut handler = handler_composed::ComposedHandler::new();
             let ctx = handler::Context::new(id, vec![], "".to_string());
-            handler.remove(ctx);
+            handler.remove(ctx).await;
         }
     }
 }

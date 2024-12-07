@@ -16,20 +16,20 @@ impl ComposedHandler {
     }
 }
 
-impl Handler for ComposedHandler {
-    fn add(&mut self, ctx: Context) -> Context {
+impl ComposedHandler {
+    pub async fn add(&mut self, ctx: Context) -> Context {
         let mut ctx = ctx;
         for handler in self.remote.iter_mut() {
-            ctx = handler.add(ctx);
+            ctx = handler.add(ctx).await;
         }
-        self.local.add(ctx)
+        self.local.add(ctx).await
     }
 
-    fn get(&self, ctx: Context) -> Option<Context> {
-        let ctx = self.local.get(ctx);
+    pub async fn get(&self, ctx: Context) -> Option<Context> {
+        let ctx = self.local.get(ctx).await;
         if let Some(mut ctx) = ctx {
             for handler in self.remote.iter() {
-                ctx = handler.get(ctx.clone()).unwrap_or(ctx);
+                ctx = handler.get(ctx.clone()).await.unwrap_or(ctx);
             }
             Some(ctx)
         } else {
@@ -37,11 +37,11 @@ impl Handler for ComposedHandler {
         }
     }
 
-    fn remove(&mut self, ctx: Context) -> Option<Context> {
-        let ctx = self.local.remove(ctx);
+    pub async fn remove(&mut self, ctx: Context) -> Option<Context> {
+        let ctx = self.local.remove(ctx).await;
         if let Some(mut ctx) = ctx {
             for handler in self.remote.iter_mut() {
-                ctx = handler.remove(ctx.clone()).unwrap_or(ctx);
+                ctx = handler.remove(ctx.clone()).await.unwrap_or(ctx);
             }
             Some(ctx)
         } else {
@@ -49,7 +49,7 @@ impl Handler for ComposedHandler {
         }
     }
 
-    fn list(&self) -> String {
-        self.local.list()
+    pub async fn list(&self) -> String {
+        self.local.list().await
     }
 }
