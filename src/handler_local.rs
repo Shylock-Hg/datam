@@ -44,6 +44,10 @@ impl LocalHandler {
 
 #[async_trait]
 impl Handler for LocalHandler {
+    fn name(&self) -> String {
+        "Local".to_string()
+    }
+
     async fn add(&mut self, ctx: Context) -> Context {
         let mut hasher = Sha256::new();
         hasher.update(ctx.get_content());
@@ -63,6 +67,7 @@ impl Handler for LocalHandler {
         res.map(|f| {
             Context::new(
                 f.get_id().to_owned(),
+                vec![],
                 f.get_sha256().to_owned(),
                 f.get_ipfs_hash().to_owned(),
             )
@@ -74,6 +79,7 @@ impl Handler for LocalHandler {
         res.map(|f| {
             Context::new(
                 f.get_id().to_owned(),
+                vec![],
                 f.get_sha256().to_owned(),
                 f.get_ipfs_hash().to_owned(),
             )

@@ -21,12 +21,12 @@ async fn main() {
             let filename = path.file_name().unwrap().to_str().unwrap();
             let content = std::fs::read(&path).unwrap();
             let mut handler = handler_composed::ComposedHandler::new();
-            let ctx = handler::Context::new(filename.to_owned(), content, "".to_string());
+            let ctx = handler::Context::new(filename.to_owned(), content, vec![], "".to_string());
             handler.add(ctx).await;
         }
         app::SubCmd::Get { id } => {
             let handler = handler_composed::ComposedHandler::new();
-            let ctx = handler::Context::new(id.clone(), vec![], "".to_string());
+            let ctx = handler::Context::new(id.clone(), vec![], vec![], "".to_string());
             let res = handler.get(ctx).await;
             if let Some(res) = res {
                 std::fs::File::create(&id).unwrap();
@@ -42,7 +42,7 @@ async fn main() {
         }
         app::SubCmd::Remove { id } => {
             let mut handler = handler_composed::ComposedHandler::new();
-            let ctx = handler::Context::new(id, vec![], "".to_string());
+            let ctx = handler::Context::new(id, vec![], vec![], "".to_string());
             handler.remove(ctx).await;
         }
     }

@@ -20,6 +20,10 @@ impl IpfsHandler {
 
 #[async_trait]
 impl Handler for IpfsHandler {
+    fn name(&self) -> String {
+        "Ipfs".to_string()
+    }
+
     async fn add(&mut self, ctx: Context) -> Context {
         let cursor = Cursor::new(ctx.get_content().to_owned());
         let res = self.client.add(cursor).await.unwrap();
@@ -27,6 +31,7 @@ impl Handler for IpfsHandler {
         Context::new(
             ctx.get_id().to_owned(),
             ctx.get_content().to_owned(),
+            ctx.get_sha256().to_owned(),
             res.hash,
         )
     }
@@ -43,6 +48,7 @@ impl Handler for IpfsHandler {
                 Context::new(
                     ctx.get_id().to_owned(),
                     content,
+                    ctx.get_sha256().to_owned(),
                     ctx.get_ipfs_digest().to_owned(),
                 )
             })
