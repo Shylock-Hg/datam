@@ -28,4 +28,12 @@ pub enum SubCmd {
         #[arg(long, help = "ID of file to remove.")]
         id: String,
     },
+    SyncGH {
+        // #[arg(long, help = "Github username.")]
+        // username: String,
+        // #[arg(long, help = "Github password.")]
+        // password: String,
+        #[arg(long, help = "Github token.")]
+        token: String,
+    },
 }

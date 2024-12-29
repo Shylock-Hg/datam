@@ -4,6 +4,7 @@ use clap::Parser;
 use simple_logger;
 
 mod app;
+mod github;
 mod handler;
 mod handler_composed;
 mod handler_ipfs;
@@ -52,6 +53,9 @@ async fn main() {
             let mut handler = handler_composed::ComposedHandler::new();
             let ctx = handler::Context::new(id, vec![], vec![], "".to_string());
             handler.remove(ctx).await;
+        }
+        app::SubCmd::SyncGH { token } => {
+            github::Github::new_token(token).sync_github().await;
         }
     }
 }
