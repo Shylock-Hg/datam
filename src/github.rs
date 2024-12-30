@@ -80,8 +80,18 @@ impl Github {
                 for repo in repos {
                     let mut dest = dir.clone();
                     dest.push(repo.0);
-                    // Clone the project.
-                    let _ = builder.clone(repo.1.as_str(), &dest);
+                    if let Ok(true) = tokio::fs::try_exists(&dest).await {
+                        // TODO try to use git2 to pull.
+                        tokio::process::Command::new("git")
+                            .arg("pull")
+                            .current_dir(&dest)
+                            .status()
+                            .await
+                            .unwrap();
+                    } else {
+                        // Clone the project.
+                        let _ = builder.clone(repo.1.as_str(), &dest);
+                    }
                 }
             }
         } else {
