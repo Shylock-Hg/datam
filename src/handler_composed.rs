@@ -3,6 +3,8 @@ use sha2::{Digest, Sha256};
 use crate::handler::{Context, Handler};
 use crate::handler_ipfs::IpfsHandler;
 use crate::handler_local::LocalHandler;
+use crate::handler_gdrive::GdriveHandler;
+use crate::ack::Ack;
 
 pub struct ComposedHandler {
     local: LocalHandler,
@@ -10,10 +12,10 @@ pub struct ComposedHandler {
 }
 
 impl ComposedHandler {
-    pub fn new() -> Self {
+    pub fn new(ack: &Ack) -> Self {
         Self {
             local: LocalHandler::new(),
-            remote: vec![Box::new(IpfsHandler::new())],
+            remote: vec![Box::new(GdriveHandler::new(ack)), Box::new(IpfsHandler::new())],
         }
     }
 }

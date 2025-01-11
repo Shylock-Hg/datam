@@ -21,3 +21,4 @@ simple_logger = "5.0.0"
 async-trait = "0.1.83"
 octocrab = "0.42.1"
 git2 = "0.19.0"
+opendal = { version = "0.51.0", features = ["services-gdrive"] }

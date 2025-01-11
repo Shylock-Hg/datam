@@ -7,7 +7,7 @@ use simple_home_dir;
 use std::fs;
 use std::io::{Read, Seek, Write};
 
-const LOCAL_DIR: &str = ".datam";
+pub const LOCAL_DIR: &str = ".datam";
 const STORE_FILE: &str = "store.json";
 
 pub struct LocalHandler {
